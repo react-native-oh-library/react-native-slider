@@ -1,12 +1,15 @@
 {
-  "name": "@react-native-community/slider",
-  "version": "4.4.3",
+  "name": "@react-native-oh-library/slider",
+  "version": "4.4.3-0.1.0",
   "license": "MIT",
   "author": "react-native-community",
   "homepage": "https://github.com/callstack/react-native-slider#readme",
   "description": "React Native component used to select a single value from a range of values.",
+  "harmony": {
+    "alias": "@react-native-community/slider"
+  },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "main": "dist/Slider.js",
   "types": "typings/index.d.ts",
@@ -48,7 +51,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/callstack/react-native-slider.git"
+    "url": "https://github.com/react-native-oh-library/slider.git"
   },
   "jest": {
     "preset": "react-native",

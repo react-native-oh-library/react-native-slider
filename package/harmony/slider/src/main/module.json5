@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "slider",
+    "type": "har",
+    "deviceTypes": [
+      'default'
+    ],
+  },
+}

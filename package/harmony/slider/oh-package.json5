@@ -1,0 +1,11 @@
+{
+  "name": "rnoh-slider",
+  "version": "0.0.1",
+  "description": "react-native-slider for HarmonyOS",
+  "main": "index.ets",
+  "author": "Huawei",
+  "license": "MIT",
+  "devDependencies": {
+    "rnoh": "file:../rnoh"
+  }
+}
