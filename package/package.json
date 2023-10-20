@@ -51,7 +51,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-native-oh-library/slider.git"
+    "url": "https://github.com/react-native-oh-library/react-native-slider.git"
   },
   "jest": {
     "preset": "react-native",
