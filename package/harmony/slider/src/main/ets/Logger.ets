@@ -1,18 +1,14 @@
 /**
- * MIT License
- * 
+ *  MIT License
  * Copyright (C) 2021 Huawei Device Co., Ltd.
- * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANT KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,46 +17,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#pragma once
 
-#include <react/renderer/components/view/ViewEventEmitter.h>
-#include <jsi/jsi.h>
+import hilog from '@ohos.hilog';
 
-namespace facebook {
-namespace react {
-    
-class JSI_EXPORT RNCSliderEventEmitter : public ViewEventEmitter {
-    public:
-      using ViewEventEmitter::ViewEventEmitter;
-    
-   struct OnChange {
-       Float value;
-    //    bool fromUser;
-   };
+class Logger {
+  private domain : number;
+  private prefix : string;
+  private format : string = '%{public}s, %{public}s';
+  private isDebug : boolean;
 
-    struct OnRNCSliderSlidingStart {
-            Float value;
-    //        bool fromUser;
-        };
-    
-    struct OnRNCSliderSlidingComplete {
-            Float value;
-    //        bool fromUser;
-        };
-    
-    struct OnRNCSliderValueChange {
-            Float value;
-    //        bool fromUser;
-        };
+  /**
+   * constructor.
+   *
+   * @param Prefix Identifies the log tag.
+   * @param domain Domain Indicates the service domain, which is a hexadecimal integer ranging from 0x0 to 0xFFFFF.
+   */
+  constructor(prefix: string = 'MyApp', domain: number = 0xFF00, isDebug = false) {
+    this.prefix = prefix;
+    this.domain = domain;
+    this.isDebug = isDebug;
+  }
 
-   void onChange(OnChange value) const;
+  debug(...args: string[]): void {
+    if (this.isDebug) {
+      hilog.debug(this.domain, this.prefix, this.format, args);
+    }
+  }
 
-    void onRNCSliderSlidingStart(OnRNCSliderSlidingStart value) const;
+  info(...args: string[]): void {
+    hilog.info(this.domain, this.prefix, this.format, args);
+  }
 
-    void onRNCSliderSlidingComplete(OnRNCSliderSlidingComplete value) const;
+  warn(...args: string[]) : void {
+    hilog.warn(this.domain, this.prefix, this.format, args);
+  }
 
-    void onRNCSliderValueChange(OnRNCSliderValueChange value) const;
-};
+  error(...args: string[]) : void {
+    hilog.error(this.domain, this.prefix, this.format, args);
+  }
+}
 
-} // namespace react
-} // namespace facebook
+export default new Logger('RNCSlider', 0xFF00, false)

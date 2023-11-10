@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #pragma once
 
 #include "RNOHCorePackage/ComponentBinders/ViewComponentJSIBinder.h"
@@ -37,6 +38,7 @@ class SliderJSIBinder : public ViewComponentJSIBinder {
         object.setProperty(rt, "maximumTrackTintColor", "Color");
         object.setProperty(rt, "minimumTrackTintColor", "Color");
         object.setProperty(rt, "thumbTintColor", "Color");
+        object.setProperty(rt, "testID", "string");
         object.setProperty(rt, "thumbImage", "object");
         object.setProperty(rt, "maximumValue", "float");
         object.setProperty(rt, "minimumValue", "float");
@@ -49,7 +51,7 @@ class SliderJSIBinder : public ViewComponentJSIBinder {
 
     facebook::jsi::Object createBubblingEventTypes(facebook::jsi::Runtime &rt) override {
         facebook::jsi::Object events(rt);
-        // events.setProperty(rt, "topChange", createDirectEvent(rt, "onChange"));
+        events.setProperty(rt, "topChange", createDirectEvent(rt, "onChange"));
         events.setProperty(rt, "topRNCSliderValueChange", createDirectEvent(rt, "onRNCSliderValueChange"));
         return events;
     }

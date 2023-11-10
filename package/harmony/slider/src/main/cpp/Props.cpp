@@ -47,7 +47,7 @@ RNCSliderProps::RNCSliderProps(
     minimumTrackTintColor(convertRawProp(context, rawProps, "minimumTrackTintColor", sourceProps.minimumTrackTintColor, {})),
     minimumValue(convertRawProp(context, rawProps, "minimumValue", sourceProps.minimumValue, {0.0})),
     step(convertRawProp(context, rawProps, "step", sourceProps.step, {0.0})),
-//    testID(convertRawProp(context, rawProps, "testID", sourceProps.testID, {})),
+    testID(convertRawProp(context, rawProps, "testID", sourceProps.testID, {})),
     thumbImage(convertRawProp(context, rawProps, "thumbImage", sourceProps.thumbImage, {})),
     thumbTintColor(convertRawProp(context, rawProps, "thumbTintColor", sourceProps.thumbTintColor, {})),
 //    trackImage(convertRawProp(context, rawProps, "trackImage", sourceProps.trackImage, {})),
