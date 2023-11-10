@@ -28,14 +28,14 @@
 namespace facebook {
 namespace react {
 
-//void RNCSliderEventEmitter::onChange(OnChange event) const {
-//    dispatchEvent("change", [event = std::move(event)](jsi::Runtime &runtime) {
-//        auto payload = jsi::Object(runtime);
-//        payload.setProperty(runtime, "value", event.value);
-//        payload.setProperty(runtime, "fromUser", event.fromUser);
-//        return payload;
-//    });
-//}
+void RNCSliderEventEmitter::onChange(OnChange event) const {
+   dispatchEvent("change", [event = std::move(event)](jsi::Runtime &runtime) {
+       auto payload = jsi::Object(runtime);
+       payload.setProperty(runtime, "value", event.value);
+    //    payload.setProperty(runtime, "fromUser", event.fromUser);
+       return payload;
+   });
+}
 
 void RNCSliderEventEmitter::onRNCSliderSlidingStart(OnRNCSliderSlidingStart event) const {
     dispatchEvent("rNCSliderSlidingStart", [event = std::move(event)](jsi::Runtime &runtime) {

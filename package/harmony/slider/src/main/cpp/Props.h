@@ -21,13 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #pragma once
 
 #include <jsi/jsi.h>
 #include <react/renderer/components/view/ViewProps.h>
 #include <react/renderer/core/PropsParserContext.h>
-//#include <react/renderer/graphics/Color.h>
-//#include <react/reanderer/core/graphicsConversions.h>
 #include <react/renderer/imagemanager/primitives.h>
 #include <vector>
 

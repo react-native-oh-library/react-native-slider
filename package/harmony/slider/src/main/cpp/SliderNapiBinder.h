@@ -42,6 +42,7 @@ public:
                 .addProperty("maximumTrackTintColor", props->maximumTrackTintColor)
                 .addProperty("minimumTrackTintColor", props->minimumTrackTintColor)
                 .addProperty("thumbTintColor", props->thumbTintColor)
+                .addProperty("testID", props->testID)
                 .addProperty("thumbImage", props->thumbImage.uri)
                 .addProperty("maximumValue", props->maximumValue)
                 .addProperty("minimumValue", props->minimumValue)

@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #pragma once
 
 #include "RNOH/ArkJS.h"
@@ -31,25 +32,23 @@ using namespace facebook;
 namespace rnoh {
 
 enum SliderEventType {
-    // CHANGE = 0,
+    VALUE_CHANGE = 0,
     SLIDING_START = 1,
-    SLIDING_COMPLETE = 2,
-    VALUE_CHANGE = 3,
-    UNSUPPORTED = 4
+    SLIDING_COMPLETE = 2
 };
 
 SliderEventType getSliderEventType(ArkJS &arkJs, napi_value eventObject) {
     auto eventType = arkJs.getString(arkJs.getObjectProperty(eventObject, "type"));
-    if (eventType == "SliderSlidingStart") {
+    if (eventType == "SliderValueChange") {
+        return SliderEventType::VALUE_CHANGE;
+    } else if (eventType == "SliderSlidingStart") {
         return SliderEventType::SLIDING_START;
     } else if (eventType == "SliderSlidingComplete") {
         return SliderEventType::SLIDING_COMPLETE;
-    } else if (eventType == "SliderValueChange") {
-        return SliderEventType::VALUE_CHANGE;
     } else {
         throw std::runtime_error("Unknown Slider event type");
-    }
-}
+    };
+};
 
 class SliderEventEmitRequestHandler : public EventEmitRequestHandler {
     public:
@@ -65,12 +64,12 @@ class SliderEventEmitRequestHandler : public EventEmitRequestHandler {
             auto eventType = getSliderEventType(arkJs, ctx.payload);
             switch (eventType)
             {
-            // case SliderEvenType::CHANGE: {
-            //     facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
-            //     react::RNCSliderEventEmitter::OnChange event = {value};
-            //     evenEmitter->onChange(event);
-            //     break;
-            // }
+            case SliderEvenType::VALUE_CHANGE: {
+                facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
+                react::RNCSliderEventEmitter::OnChange event = {value};
+                evenEmitter->onChange(event);
+                break;
+            }
             case SliderEventType::SLIDING_START: {
                 facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
                 react::RNCSliderEventEmitter::OnRNCSliderSlidingStart event = {value};
@@ -83,13 +82,6 @@ class SliderEventEmitRequestHandler : public EventEmitRequestHandler {
                 eventEmitter->onRNCSliderSlidingComplete(event);
                 break;
             }
-            case SliderEventType::VALUE_CHANGE: {
-                facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
-                react::RNCSliderEventEmitter::OnRNCSliderValueChange event = {value};
-                eventEmitter->onRNCSliderValueChange(event);
-                break;
-            }
-            
             default:
                 break;
             }

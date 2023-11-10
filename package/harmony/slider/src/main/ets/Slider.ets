@@ -25,16 +25,19 @@
 import {
   Descriptor,
   RNOHContext,
-  ViewDynamicProps,
+  ViewBaseProps,
   RNViewBase,
   ComponentBuilderContext,
   ColorSegments,
   convertColorSegmentsToString
 } from 'rnoh'
+import Logger from './Logger'
 
-export const SLIDER_TYPE = "RNCSlider" as const
+const TAG: string = "[RNOH] RNCSlider"
 
-export type SliderProps = ViewDynamicProps & {
+export const SLIDER_TYPE: string = "RNCSlider"
+
+export interface SliderProps extends ViewBaseProps {
   disabled: boolean
   inverted: boolean
   vertical: boolean
@@ -42,6 +45,7 @@ export type SliderProps = ViewDynamicProps & {
   maximumTrackTintColor: ColorSegments
   minimumTrackTintColor: ColorSegments
   thumbTintColor: ColorSegments
+  testID: string
   thumbImage: string
   maximumValue: number
   minimumValue: number
@@ -51,16 +55,18 @@ export type SliderProps = ViewDynamicProps & {
   upperLimit: number
 }
 
-export type SliderDescriptor = Descriptor<typeof SLIDER_TYPE, SliderProps>
+export type SliderDescriptor = Descriptor<"RNCSlider", SliderProps>
 
 @Component
 export struct RNCSlider {
-  ctx: RNOHContext
-  tag: number
+  ctx!: RNOHContext
+  tag: number = 0
   @BuilderParam buildCustomComponent: (componentBuilderContext: ComponentBuilderContext) => void
   @State descriptor: SliderDescriptor = {} as SliderDescriptor
   private unregisterDescriptorChangesListener?: ()=> void = undefined
   @State SliderValue: number = 0
+  private lowerLimit = 0
+  private upperLimit = 0
 
   aboutToAppear() {
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<SliderDescriptor>(this.tag)
@@ -70,7 +76,9 @@ export struct RNCSlider {
       }
     )
     this.SliderValue = this.descriptor.props.value
-    console.info(`[RNOH]: in RNCSlider, ${JSON.stringify(this.descriptor.props)}`)
+    this.upperLimit = this.descriptor.props.upperLimit ? this.descriptor.props.upperLimit : this.descriptor.props.maximumValue
+    this.upperLimit = this.descriptor.props.lowerLimit ? this.descriptor.props.lowerLimit : this.descriptor.props.minimumValue
+    Logger.info(TAG, `descriptor props: ${JSON.stringify(this.descriptor.props)}`)
   }
 
   aboutToDisappear() {
@@ -84,13 +92,18 @@ export struct RNCSlider {
     if (source.startsWith("file://assets/src/assets/")) {
       return $rawfile(source.replace("file://assets/src/assets/", "assets/"));
     }
-    return source
+    return source;
   }
 
   onSliderChange(value: number, mode: SliderChangeMode) {
+    if (value < this.lowerLimit) {
+      value = this.lowerLimit
+    } else if (value > this.upperLimit) {
+      value = this.upperLimit
+    }
     this.SliderValue = value
     if (mode === 0) {
-      this.ctx.rnInstanceManager.emitComponentEvent(
+      this.ctx.rnInstance.emitComponentEvent(
         this.descriptor.tag,
         SLIDER_TYPE,
         {
@@ -99,9 +112,28 @@ export struct RNCSlider {
           // fromUser: true
         }
       );
-    }
-    else if (mode === 1) {
-      this.ctx.rnInstanceManager.emitComponentEvent(
+    } else if (mode === 1) {
+      this.ctx.rnInstance.emitComponentEvent(
+        this.descriptor.tag,
+        SLIDER_TYPE,
+        {
+          type: "SliderValueChange",
+          value: value,
+          // fromUser: true
+        }
+      );
+    } else if (mode === 2) {
+      this.ctx.rnInstance.emitComponentEvent(
+        this.descriptor.tag,
+        SLIDER_TYPE,
+        {
+          type: "SliderSlidingComplete",
+          value: value,
+          // fromUser: true
+        }
+      );
+    } else if (mode === 3) {
+      this.ctx.rnInstance.emitComponentEvent(
         this.descriptor.tag,
         SLIDER_TYPE,
         {
@@ -111,27 +143,16 @@ export struct RNCSlider {
         }
       );
     }
-    else if (mode === 2) {
-      this.ctx.rnInstanceManager.emitComponentEvent(
-        this.descriptor.tag,
-        SLIDER_TYPE,
-        {
-          type: "SliderSlidingComplete",
-          value: value,
-          // fromUser: true
-        }
-      );
-    }
   }
 
-  getBlockStyle() {
+  getBlockStyle(): SliderBlockStyle {
     if (this.descriptor.props.thumbImage) {
       return {
         type: SliderBlockType.IMAGE,
         image: this.getSource(this.descriptor.props.thumbImage)
-      }
+      };
     }
-    return { type: SliderBlockType.DEFAULT}
+    return { type: SliderBlockType.DEFAULT};
   }
 
   build() {
@@ -153,7 +174,7 @@ export struct RNCSlider {
         .selectedColor(convertColorSegmentsToString(this.descriptor.props.minimumTrackTintColor))
         .showSteps(false)
         .blockStyle(this.getBlockStyle())
-        .onChange(this.onSliderChange.bind(this))
+        .onChange((value: number, mode: SliderChangeMode) => this.onSliderChange(value, mode))
     }
   }
 }
