@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  * 
  * Copyright (C) 2021 Huawei Device Co., Ltd.
@@ -64,10 +64,10 @@ class SliderEventEmitRequestHandler : public EventEmitRequestHandler {
             auto eventType = getSliderEventType(arkJs, ctx.payload);
             switch (eventType)
             {
-            case SliderEvenType::VALUE_CHANGE: {
+            case SliderEventType::VALUE_CHANGE: {
                 facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
                 react::RNCSliderEventEmitter::OnChange event = {value};
-                evenEmitter->onChange(event);
+                eventEmitter->onChange(event);
                 break;
             }
             case SliderEventType::SLIDING_START: {

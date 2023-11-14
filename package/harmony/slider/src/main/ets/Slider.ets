@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (C) 2021 Huawei Device Co., Ltd.
@@ -69,15 +69,15 @@ export struct RNCSlider {
   private upperLimit = 0
 
   aboutToAppear() {
-    this.descriptor = this.ctx.descriptorRegistry.getDescriptor<SliderDescriptor>(this.tag)
+    this.descriptor = this.ctx.descriptorRegistry.getDescriptor<SliderDescriptor>(this.tag);
     this.unregisterDescriptorChangesListener = this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as SliderDescriptor)
       }
-    )
-    this.SliderValue = this.descriptor.props.value
-    this.upperLimit = this.descriptor.props.upperLimit ? this.descriptor.props.upperLimit : this.descriptor.props.maximumValue
-    this.upperLimit = this.descriptor.props.lowerLimit ? this.descriptor.props.lowerLimit : this.descriptor.props.minimumValue
+    );
+    this.SliderValue = this.descriptor.props.value;
+    this.upperLimit = this.descriptor.props.upperLimit ? this.descriptor.props.upperLimit : this.descriptor.props.maximumValue;
+    this.lowerLimit = this.descriptor.props.lowerLimit ? this.descriptor.props.lowerLimit : this.descriptor.props.minimumValue;
     Logger.info(TAG, `descriptor props: ${JSON.stringify(this.descriptor.props)}`)
   }
 
@@ -97,9 +97,9 @@ export struct RNCSlider {
 
   onSliderChange(value: number, mode: SliderChangeMode) {
     if (value < this.lowerLimit) {
-      value = this.lowerLimit
+      value = this.lowerLimit;
     } else if (value > this.upperLimit) {
-      value = this.upperLimit
+      value = this.upperLimit;
     }
     this.SliderValue = value
     if (mode === 0) {
