@@ -1,4 +1,4 @@
-/*
+/**
  * MIT License
  * 
  * Copyright (C) 2021 Huawei Device Co., Ltd.
@@ -25,6 +25,7 @@
 #pragma once
 
 #include <jsi/jsi.h>
+#include <react/renderer/components/image/conversions.h>
 #include <react/renderer/components/view/ViewProps.h>
 #include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/imagemanager/primitives.h>
@@ -32,61 +33,6 @@
 
 namespace facebook {
 namespace react {
-
-inline void fromRawValue(const PropsParserContext &context, const RawValue &value, ImageSource &result) {
-  if (value.hasType<std::string>()) {
-    result = {
-      ImageSource::Type::Remote,
-      (std::string)value,
-    };
-    return;
-  }
-
-  if (value.hasType<butter::map<std::string, RawValue>>()) {
-    auto items = (butter::map<std::string, RawValue>)value;
-    result = {};
-
-    result.type = ImageSource::Type::Remote;
-
-    if (items.find("__packager_asset") != items.end()) {
-      result.type = ImageSource::Type::Local;
-    }
-
-    if (items.find("width") != items.end() && items.find("height") != items.end() && 
-        items.at("width").hasType<Float>() && items.at("height").hasType<Float>()) {
-        result.size = {(Float)items.at("width"), (Float)items.at("height")};
-    }
-
-    if (items.find("scale") != items.end() && 
-        items.at("scale").hasType<Float>()) {
-        result.scale = (Float)items.at("scale");
-    } else {
-        result.scale = items.find("deprecated") != items.end() ? 0.0f : 1.0f;
-    }
-
-    if (items.find("url") != items.end() && 
-        items.at("url").hasType<std::string>()) {
-        result.uri = (std::string)items.at("url");
-    }
-
-    if (items.find("uri") != items.end() && 
-        items.at("uri").hasType<std::string>()) {
-        result.uri = (std::string)items.at("uri");
-    }
-
-    if (items.find("bundle") != items.end() && 
-        items.at("bundle").hasType<std::string>()) {
-        result.bundle = (std::string)items.at("bundle");
-        result.type = ImageSource::Type::Local;
-    }
-
-    return;
-  }
-  result = {};
-  result.type = ImageSource::Type::Invalid;
-}
-
-inline std::string toString(const ImageSource &value) { return "{uri: " + value.uri + "}"; }
 
 class JSI_EXPORT RNCSliderProps final : public ViewProps {
 public:
