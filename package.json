@@ -1,9 +1,0 @@
-{
-    "scripts": {
-        "install": "cd package && npm install && cd ../example && npm install",
-        "start-example": "cd example && npm start",
-        "example-android": "cd example && npx react-native run-android",
-        "example-ios": "cd example && npx pod-install && npx react-native run-ios",
-        "example-windows": "cd example && npx react-native run-windows"
-    }
-}

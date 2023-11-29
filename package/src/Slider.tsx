@@ -10,7 +10,7 @@ import {
   NativeSyntheticEvent,
   StyleProp,
 } from 'react-native';
-import RCTSliderNativeComponent from './index';
+import RCTSliderNativeComponent from '@react-native-community/slider/src/index';
 //@ts-ignore
 import type {ImageSource} from 'react-native/Libraries/Image/ImageSource';
 

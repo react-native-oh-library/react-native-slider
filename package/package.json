@@ -1,6 +1,6 @@
 {
   "name": "@react-native-oh-library/slider",
-  "version": "4.4.3-0.1.2",
+  "version": "4.4.3-0.2.0",
   "license": "MIT",
   "author": "react-native-community",
   "homepage": "https://github.com/callstack/react-native-slider#readme",
@@ -21,8 +21,10 @@
   "scripts": {
     "prepare": "babel --extensions \".ts,.tsx\" --out-dir dist src",
     "lint": "npx eslint src",
-    "test": "npx jest src",
-    "prepack": "npx copyfiles \"./../README.md\" ./README.md"
+    "test": "npx jest src"
+  },
+  "dependencies": {
+    "@react-native-community/slider": "4.4.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
