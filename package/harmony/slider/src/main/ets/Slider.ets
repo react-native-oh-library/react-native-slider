@@ -73,6 +73,13 @@ export struct RNCSlider {
     this.unregisterDescriptorChangesListener = this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as SliderDescriptor)
+        let value = this.descriptor.props.value;
+        if (value < this.lowerLimit) {
+          value = this.lowerLimit;
+        } else if (value > this.upperLimit) {
+          value = this.upperLimit;
+        }
+        this.SliderValue = value;
       }
     );
     this.SliderValue = this.descriptor.props.value;
