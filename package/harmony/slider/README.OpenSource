@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "react-native-slider",
+        "License": "MIT License",
+        "License File":"https://github.com/callstack/react-native-slider/blob/main/LICENSE.md",
+        "Version Number": "4.4.3-0.1.3",
+        "Owner" : ""
+        "Upstream URL": "https://github.com/callstack/react-native-slider",
+        "Description": "React Native component used to select a single value from a range of values."
+    }
+]
