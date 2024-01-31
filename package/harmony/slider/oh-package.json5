@@ -5,7 +5,7 @@
   "main": "index.ets",
   "author": "Huawei",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "rnoh": "file:../rnoh"
   }
 }
