@@ -61,7 +61,6 @@ export type SliderDescriptor = Descriptor<"RNCSlider", SliderProps>
 export struct RNCSlider {
   ctx!: RNOHContext
   tag: number = 0
-  @BuilderParam buildCustomComponent: (componentBuilderContext: ComponentBuilderContext) => void
   @State descriptor: SliderDescriptor = {} as SliderDescriptor
   private unregisterDescriptorChangesListener?: ()=> void = undefined
   @State SliderValue: number = 0
@@ -103,6 +102,7 @@ export struct RNCSlider {
   }
 
   onSliderChange(value: number, mode: SliderChangeMode) {
+    Logger.debug(TAG, `onSliderChange: ${value}, ${mode}`)
     if (value < this.lowerLimit) {
       value = this.lowerLimit;
     } else if (value > this.upperLimit) {
