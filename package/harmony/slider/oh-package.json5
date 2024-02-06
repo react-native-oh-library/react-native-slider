@@ -1,7 +1,7 @@
 {
   "name": "rnoh-slider",
   "version": "4.4.3",
-  "description": "react-native-slider for HarmonyOS",
+  "description": "@react-native-community/slider for HarmonyOS",
   "main": "index.ets",
   "author": "Huawei",
   "license": "MIT",
