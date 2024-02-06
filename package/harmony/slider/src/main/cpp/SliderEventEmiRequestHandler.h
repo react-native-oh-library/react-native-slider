@@ -28,6 +28,7 @@
 #include "RNOH/EventEmitRequestHandler.h"
 #include "EventEmitters.h"
 
+
 using namespace facebook;
 namespace rnoh {
 
@@ -66,8 +67,10 @@ class SliderEventEmitRequestHandler : public EventEmitRequestHandler {
             {
             case SliderEventType::VALUE_CHANGE: {
                 facebook::react::Float value = arkJs.getDouble(arkJs.getObjectProperty(ctx.payload, "value"));
-                react::RNCSliderEventEmitter::OnChange event = {value};
-                eventEmitter->onChange(event);
+                react::RNCSliderEventEmitter::OnChange event1 = {value};
+                eventEmitter->onChange(event1);
+                react::RNCSliderEventEmitter::OnRNCSliderValueChange event2 = {value};
+                eventEmitter->onRNCSliderValueChange(event2);
                 break;
             }
             case SliderEventType::SLIDING_START: {
