@@ -35,21 +35,10 @@ public:
         if (auto props = std::dynamic_pointer_cast<const facebook::react::RNCSliderProps>(shadowView.props)) {
             return ArkJS(env)
                 .getObjectBuilder(napiViewProps)
-                .addProperty("disabled", props->disabled)
-                .addProperty("inverted", props->inverted)
-                .addProperty("vertical", props->vertical)
-                .addProperty("tapToSeek", props->tapToSeek)
                 .addProperty("maximumTrackTintColor", props->maximumTrackTintColor)
                 .addProperty("minimumTrackTintColor", props->minimumTrackTintColor)
                 .addProperty("thumbTintColor", props->thumbTintColor)
-                .addProperty("testID", props->testID)
                 .addProperty("thumbImage", props->thumbImage.uri)
-                .addProperty("maximumValue", props->maximumValue)
-                .addProperty("minimumValue", props->minimumValue)
-                .addProperty("step", props->step)
-                .addProperty("value", props->value)
-                .addProperty("lowerLimit", props->lowerLimit)
-                .addProperty("upperLimit", props->upperLimit)
                 .build();
         }
         return napiViewProps;

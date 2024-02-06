@@ -43,24 +43,13 @@ public:
 
   // std::string accessibilityUnits{};
   // std::vector<std::string> accessibilityIncrements{};
-  bool disabled{false};
-  bool inverted{false};
-  bool vertical{false};
-  bool tapToSeek{false};
   // ImageSource maximumTrackImage{};
   SharedColor maximumTrackTintColor{};
-  Float maximumValue{0.0};
   // ImageSource minimumTrackImage{};
   SharedColor minimumTrackTintColor{};
-  Float minimumValue{0.0};
-  Float step{0.0};
-  std::string testID{};
   ImageSource thumbImage{};
   SharedColor thumbTintColor{};
   // ImageSource trackImage{};
-  Float value{0.0};
-  Float lowerLimit{0.0};
-  Float upperLimit{0.0};
 };
 
 } // namespace react

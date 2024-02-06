@@ -27,10 +27,10 @@ import {
   RNOHContext,
   ViewBaseProps,
   RNViewBase,
-  ComponentBuilderContext,
   ColorSegments,
-  convertColorSegmentsToString
+  ViewRawProps,
 } from 'rnoh'
+import { SliderDescriptorWrapper } from './SliderDescriptorWrapper'
 import Logger from './Logger'
 
 const TAG: string = "[RNOH] RNCSlider"
@@ -38,30 +38,36 @@ const TAG: string = "[RNOH] RNCSlider"
 export const SLIDER_TYPE: string = "RNCSlider"
 
 export interface SliderProps extends ViewBaseProps {
-  disabled: boolean
-  inverted: boolean
-  vertical: boolean
-  tapToSeek: boolean
-  maximumTrackTintColor: ColorSegments
-  minimumTrackTintColor: ColorSegments
-  thumbTintColor: ColorSegments
-  testID: string
-  thumbImage: string
-  maximumValue: number
-  minimumValue: number
-  step: number
-  value: number
-  lowerLimit: number
-  upperLimit: number
+  thumbImage?: string
+  maximumTrackTintColor?: ColorSegments
+  minimumTrackTintColor?: ColorSegments
+  thumbTintColor?: ColorSegments
 }
 
-export type SliderDescriptor = Descriptor<"RNCSlider", SliderProps>
+export interface SliderSate {}
+
+export interface SliderRawProps extends ViewRawProps {
+  disabled?: boolean
+  inverted?: boolean
+  vertical?: boolean
+  tapToSeek?: boolean
+  testID?: string
+  maximumValue?: number
+  minimumValue?: number
+  step?: number
+  value?: number
+  lowerLimit?: number
+  upperLimit?: number
+}
+
+export type SliderDescriptor = Descriptor<"RNCSlider", SliderProps, SliderSate, SliderRawProps>
 
 @Component
 export struct RNCSlider {
   ctx!: RNOHContext
   tag: number = 0
   @State descriptor: SliderDescriptor = {} as SliderDescriptor
+  @State private descriptorWrapper: SliderDescriptorWrapper | undefined = undefined
   private unregisterDescriptorChangesListener?: ()=> void = undefined
   @State SliderValue: number = 0
   private lowerLimit = 0
@@ -69,10 +75,12 @@ export struct RNCSlider {
 
   aboutToAppear() {
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<SliderDescriptor>(this.tag);
+    this.descriptorWrapper = new SliderDescriptorWrapper(this.descriptor);
     this.unregisterDescriptorChangesListener = this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as SliderDescriptor)
-        let value = this.descriptor.props.value;
+        this.descriptorWrapper = new SliderDescriptorWrapper(this.descriptor);
+        let value = this.descriptorWrapper.value;
         if (value < this.lowerLimit) {
           value = this.lowerLimit;
         } else if (value > this.upperLimit) {
@@ -81,24 +89,14 @@ export struct RNCSlider {
         this.SliderValue = value;
       }
     );
-    this.SliderValue = this.descriptor.props.value;
-    this.upperLimit = this.descriptor.props.upperLimit ? this.descriptor.props.upperLimit : this.descriptor.props.maximumValue;
-    this.lowerLimit = this.descriptor.props.lowerLimit ? this.descriptor.props.lowerLimit : this.descriptor.props.minimumValue;
-    Logger.info(TAG, `descriptor props: ${JSON.stringify(this.descriptor.props)}`)
+    this.SliderValue = this.descriptorWrapper.value;
+    this.upperLimit = this.descriptorWrapper.upperLimit;
+    this.lowerLimit = this.descriptorWrapper.lowerLimit;
+    Logger.info(TAG, `descriptor props: ${JSON.stringify(this.descriptor.rawProps)}`)
   }
 
   aboutToDisappear() {
     this.unregisterDescriptorChangesListener?.()
-  }
-
-  getSource(source: string) {
-    if (source.startsWith("asset://")) {
-      return $rawfile(source.replace("asset://", "assets/"));
-    }
-    if (source.startsWith("file://assets/src/assets/")) {
-      return $rawfile(source.replace("file://assets/src/assets/", "assets/"));
-    }
-    return source;
   }
 
   onSliderChange(value: number, mode: SliderChangeMode) {
@@ -152,35 +150,25 @@ export struct RNCSlider {
     }
   }
 
-  getBlockStyle(): SliderBlockStyle {
-    if (this.descriptor.props.thumbImage) {
-      return {
-        type: SliderBlockType.IMAGE,
-        image: this.getSource(this.descriptor.props.thumbImage)
-      };
-    }
-    return { type: SliderBlockType.DEFAULT};
-  }
-
   build() {
     RNViewBase({ ctx: this.ctx, tag: this.tag }) {
       Slider({
         value: this.SliderValue,
-        step: this.descriptor.props.step,
-        min: this.descriptor.props.minimumValue,
-        max: this.descriptor.props.maximumValue,
-        direction: (this.descriptor.props.vertical ? Axis.Vertical : Axis.Horizontal),
-        reverse: (this.descriptor.props.inverted ? true : false),
+        step: this.descriptor.rawProps.step,
+        min: this.descriptorWrapper?.minimumValue,
+        max: this.descriptorWrapper?.maximumValue,
+        direction: (this.descriptorWrapper?.direction),
+        reverse: (this.descriptorWrapper?.reverse),
         style: SliderStyle.OutSet
       })
         .width("100%")
         .height("100%")
-        .enabled(this.descriptor.props.disabled ? false : true)
-        .blockColor(convertColorSegmentsToString(this.descriptor.props.thumbTintColor))
-        .trackColor(convertColorSegmentsToString(this.descriptor.props.maximumTrackTintColor))
-        .selectedColor(convertColorSegmentsToString(this.descriptor.props.minimumTrackTintColor))
+        .enabled(this.descriptorWrapper?.enabled)
+        .blockColor(this.descriptorWrapper?.blockColor)
+        .trackColor(this.descriptorWrapper?.trackColor)
+        .selectedColor(this.descriptorWrapper?.selectedColor)
         .showSteps(false)
-        .blockStyle(this.getBlockStyle())
+        .blockStyle(this.descriptorWrapper?.BlockStyle)
         .onChange((value: number, mode: SliderChangeMode) => this.onSliderChange(value, mode))
     }
   }
