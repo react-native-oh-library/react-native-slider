@@ -1,11 +1,11 @@
 {
-  "name": "rnoh-slider",
-  "version": "4.4.3",
+  "name": "@react-native-oh-tpl/slider",
+  "version": "4.4.3-0.3.2",
   "description": "@react-native-community/slider for HarmonyOS",
   "main": "index.ets",
   "author": "Huawei",
   "license": "MIT",
   "dependencies": {
-    "rnoh": "file:../rnoh"
+    "@rnoh/react-native-openharmony": "file:../react_native_openharmony"
   }
 }
