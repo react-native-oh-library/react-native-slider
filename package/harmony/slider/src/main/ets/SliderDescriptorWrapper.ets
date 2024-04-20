@@ -1,5 +1,5 @@
 import { convertColorValueToRGBA, Descriptor, convertColorSegmentsToString, ViewDescriptorWrapperBase, ViewBaseProps,
-  ColorSegments } from 'rnoh';
+  ColorSegments } from '@rnoh/react-native-openharmony';
 import { SliderProps, SliderSate, SliderRawProps } from './Slider'
 
 const LIMIT_MIN_VALUE = Number.MIN_VALUE;

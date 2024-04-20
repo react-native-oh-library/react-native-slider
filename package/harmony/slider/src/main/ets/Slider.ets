@@ -29,7 +29,7 @@ import {
   RNViewBase,
   ColorSegments,
   ViewRawProps,
-} from 'rnoh'
+} from '@rnoh/react-native-openharmony'
 import { SliderDescriptorWrapper } from './SliderDescriptorWrapper'
 import Logger from './Logger'
 
