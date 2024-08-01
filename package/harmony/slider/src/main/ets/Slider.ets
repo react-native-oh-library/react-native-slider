@@ -37,6 +37,9 @@ const TAG: string = "[RNOH] RNCSlider"
 
 export const SLIDER_TYPE: string = "RNCSlider"
 
+const DEFAULT_LIMIT_VALUE = -9007199254740991;
+const DEFAULT_MAX_VALUE = 9007199254740991;
+
 export interface SliderProps extends ViewBaseProps {
   thumbImage?: string
   maximumTrackTintColor?: ColorSegments
@@ -170,6 +173,10 @@ export struct RNCSlider {
         .showSteps(false)
         .blockStyle(this.descriptorWrapper?.BlockStyle)
         .onChange((value: number, mode: SliderChangeMode) => this.onSliderChange(value, mode))
+        .slideRange({
+          from: this.lowerLimit === DEFAULT_LIMIT_VALUE ? this.descriptorWrapper?.minimumValue : this.lowerLimit,
+          to: this.upperLimit === DEFAULT_MAX_VALUE ? this.descriptorWrapper?.maximumValue : this.upperLimit
+        })
     }
   }
 }
