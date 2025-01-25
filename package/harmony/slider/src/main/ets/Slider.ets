@@ -89,7 +89,7 @@ export struct RNCSlider {
         } else if (value > this.upperLimit) {
           value = this.upperLimit;
         }
-        this.SliderValue = value;
+        this.SliderValue = this.descriptor.rawProps.value ? value : this.SliderValue;
       }
     );
     this.SliderValue = this.descriptorWrapper.value;
