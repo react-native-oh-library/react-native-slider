@@ -51,8 +51,8 @@ class SliderJSIBinder : public ViewComponentJSIBinder {
 
     facebook::jsi::Object createBubblingEventTypes(facebook::jsi::Runtime &rt) override {
         facebook::jsi::Object events(rt);
-        events.setProperty(rt, "topChange", createDirectEvent(rt, "onChange"));
-        events.setProperty(rt, "topRNCSliderValueChange", createDirectEvent(rt, "onRNCSliderValueChange"));
+        events.setProperty(rt, "topChange", createBubblingCapturedEvent(rt, "onChange"));
+        events.setProperty(rt, "topRNCSliderValueChange", createBubblingCapturedEvent(rt, "onRNCSliderValueChange"));
         return events;
     }
 
